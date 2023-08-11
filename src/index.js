@@ -1,17 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './styles/index.css';
-import App from './pages/App';
-import reportWebVitals from './fonctions/reportWebVitals';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './css/index.css'
+import {Template} from './pages/Template'
+import {Providers} from './provider/Providers'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import {CustomThemeProvider} from './provider/ThemeProvider'
+import {ErrorBoundary} from 'react-error-boundary'
+import {PageErreur} from './composants/Messages/PageErreur'
+import {CssBaseline} from '@mui/material'
+
+/** Permet de récupérer l'élément root dans le DOM */
+const root = ReactDOM.createRoot(document.getElementById('root'))
+
+/** Affiche les élément dans l'élement root du DOM */
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  <ErrorBoundary
+    FallbackComponent={
+      <PageErreur
+        message={'page.erreur_message'}
+        description={'page.erreur_description'}
+      />
+    }
+  >
+    <CustomThemeProvider>
+      <CssBaseline/>
+      <Providers>
+        <Template/>
+      </Providers>
+    </CustomThemeProvider>
+  </ErrorBoundary>
+)
